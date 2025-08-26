@@ -1,9 +1,7 @@
-.idea
-
+# Terraform core
 .terraform/
 *.tfstate
 *.tfstate.*
-*.tfstate.backup
 *.terraform.lock.hcl
 
 # Sensitive data files
@@ -11,11 +9,54 @@ terraform.tfvars
 *.auto.tfvars
 *.tfvars
 variables.tf.json
-crash.log
-crash.*.log
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-.terraformrc
-terraform.rc
+secrets.tf
+
+# Credentials and keys
+*.pem
+*.key
+*.pub
+*.crt
+*.cer
+aws_credentials
+.aws/credentials
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+terraform.log
+debug.log
+
+# Plan outputs
+*.tfplan
+plan.out
+apply.out
+
+# Backup files
+backup/
+*.backup
+
+# Local modules
+modules/local/
+temp/
+
+# Test files
+test/
+*.test
+fixtures/
+
