@@ -60,3 +60,5 @@ test/
 *.test
 fixtures/
 
+.terraform/
+.terraform.lock.hcl
