@@ -3,6 +3,7 @@
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfstate.backup
 *.terraform.lock.hcl
 
 # Sensitive data files
@@ -10,4 +11,11 @@ terraform.tfvars
 *.auto.tfvars
 *.tfvars
 variables.tf.json
-secrets.tf
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
