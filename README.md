@@ -104,22 +104,7 @@ vpc_cidr     = "10.0.0.0/16"
 subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
 
 instance_type = "t3.micro"
-key_name      = "my-ssh-key"
+key_name      = "my-ec2-ssh-key"
 ```
 
 ------------------------------------------------------------------------
-
-## 📊 Variable Flow Diagram
-
-![Terraform Variable Flow](./docs/terraform-variable-flow.png)
-
-------------------------------------------------------------------------
-
-## ✅ Best Practices
-
--   Use **modules** for reusability.
--   Store sensitive values in a **remote backend** (e.g., S3 + DynamoDB
-    for state locking).
--   Use **workspaces** for different environments (dev, staging, prod).
--   Version control your `.tf` files, but **do not commit
-    `terraform.tfstate`**.
