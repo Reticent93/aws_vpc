@@ -60,7 +60,7 @@ security_group_config = {
 
 
 instance_type = "t2.micro"
-key_name = "my-key-pair"
+key_name = "my-ec2-ssh-key"
 
 # Enable VPC Peering
 enable_vpc_peering = true

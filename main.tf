@@ -51,6 +51,8 @@ module "subnet_vpc1" {
   vpc_id               = module.vpc1.vpc_id
   igw_id               = module.vpc1.igw_id
   availability_zones   = var.availability_zones
+  public_route_table_id   = module.vpc1.public_route_table_id
+  private_route_table_id  = module.vpc1.private_route_table_id
   public_subnet_cidrs  = var.vpc_configs.vpc1.public_subnet_cidrs
   private_subnet_cidrs = var.vpc_configs.vpc1.private_subnet_cidrs
 }
@@ -61,6 +63,8 @@ module "subnet_vpc2" {
   vpc_id               = module.vpc2.vpc_id
   igw_id               = module.vpc2.igw_id
   availability_zones   = var.availability_zones
+  public_route_table_id   = module.vpc2.public_route_table_id
+  private_route_table_id  = module.vpc2.private_route_table_id
   public_subnet_cidrs  = var.vpc_configs.vpc2.public_subnet_cidrs
   private_subnet_cidrs = var.vpc_configs.vpc2.private_subnet_cidrs
 }
@@ -104,10 +108,12 @@ module "ec2_vpc2" {
 
   # VPC Peering (Optional)
   module "vpc_peering" {
-    count     = var.enable_vpc_peering ? 1 : 0
-    source    = "./modules/vpc_peering"
-    vpc_id_1  = module.vpc1.vpc_id
-    vpc_id_2  = module.vpc2.vpc_id
-    cidr_vpc1 = var.vpc_configs.vpc1.cidr_block
-    cidr_vpc2 = var.vpc_configs.vpc2.cidr_block
+    count               = var.enable_vpc_peering ? 1 : 0
+    source              = "./modules/vpc_peering"
+    vpc_id_1            = module.vpc1.vpc_id
+    vpc_id_2            = module.vpc2.vpc_id
+    cidr_vpc1           = var.vpc_configs.vpc1.cidr_block
+    cidr_vpc2           = var.vpc_configs.vpc2.cidr_block
+    vpc1_route_table_id = module.vpc1.public_route_table_id
+    vpc2_route_table_id = module.vpc2.public_route_table_id
   }

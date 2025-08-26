@@ -1,3 +1,13 @@
 .idea
 
+.terraform/
+*.tfstate
+*.tfstate.*
+*.terraform.lock.hcl
+
+# Sensitive data files
+terraform.tfvars
+*.auto.tfvars
 *.tfvars
+variables.tf.json
+secrets.tf

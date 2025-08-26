@@ -9,15 +9,38 @@ resource "aws_vpc" "main" {
 }
 
 
-
-
-
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "${var.project_name}-igw"
   }
 }
+
+
+# Public Route Table
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  # Route for internet access
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  tags = {
+    Name = "${var.project_name}-public-rt"
+  }
+}
+
+
+# Private Route Table (no internet access by default)
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.project_name}-private-rt"
+  }
+}
+
 
 resource "aws_security_group" "web" {
   description = "Security group for web servers"
@@ -61,8 +84,3 @@ resource "aws_security_group" "web" {
 }
 
 
-
-resource "aws_vpc_peering_connection" "vpc_peering" {
-  peer_vpc_id = ""
-  vpc_id      = aws_vpc.main.id
-}

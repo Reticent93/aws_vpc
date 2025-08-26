@@ -1,19 +1,30 @@
 variable "vpc_id_1" {
-  description = "The ID of the first VPC"
+  description = "ID of the first VPC"
   type        = string
 }
 
 variable "vpc_id_2" {
-  description = "The ID of the second VPC"
+  description = "ID of the second VPC"
+  type        = string
+}
+
+variable "vpc1_route_table_id" {
+  description = "Route table ID for VPC 1"
+  type        = string
+}
+
+variable "vpc2_route_table_id" {
+  description = "Route table ID for VPC 2"
   type        = string
 }
 
 variable "cidr_vpc1" {
-  description = "CIDR block of the first VPC"
+  description = "CIDR block for VPC 1"
   type        = string
 }
 
 variable "cidr_vpc2" {
-  description = "CIDR block of the second VPC"
+  description = "CIDR block for VPC 2"
   type        = string
 }
+
