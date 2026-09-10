@@ -1,7 +1,7 @@
 variable "aws_region" {
     description = "AWS region"
     type        = string
-    default     = "us-east-1"
+    default     = "us-west-2"
 }
 
 variable "project_name" {
@@ -72,12 +72,6 @@ variable "create_log_group" {
     default     = false
 }
 
-variable "log_retention_days" {
-    description = "CloudWatch log retention in days"
-    type        = number
-    default     = 14
-}
-
 variable "common_tags" {
     description = "Common tags for all resources"
     type        = map(string)
@@ -100,6 +94,47 @@ variable "security_group_config" {
 
 variable "enable_vpc_peering" {
     description = "Enable VPC peering"
+    type        = bool
+    default     = false
+}
+
+variable "image_tag" {
+    type = string
+    default = "v1"
+}
+
+variable "container_port" {
+    type = number
+    default = 8081
+}
+
+variable "cpu" {
+    type = number
+    default = 256
+}
+
+variable "memory" {
+    type = number
+    default = 512
+}
+
+variable "desired_count" {
+    type = number
+    default = 1
+}
+
+variable "log_retention_days" {
+    type = number
+    default = 7
+}
+
+variable "health_check_path" {
+    type    = string
+    default = "/health"
+}
+
+variable "enable_ec2" {
+    description = "Whether to enable EC2 instances"
     type        = bool
     default     = false
 }

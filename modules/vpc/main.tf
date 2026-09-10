@@ -8,14 +8,12 @@ resource "aws_vpc" "main" {
     }
 }
 
-
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "${var.project_name}-igw"
   }
 }
-
 
 # Public Route Table
 resource "aws_route_table" "public" {
@@ -31,7 +29,6 @@ resource "aws_route_table" "public" {
   }
 }
 
-
 # Private Route Table (no internet access by default)
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
@@ -40,7 +37,6 @@ resource "aws_route_table" "private" {
     Name = "${var.project_name}-private-rt"
   }
 }
-
 
 resource "aws_security_group" "web" {
   description = "Security group for web servers"

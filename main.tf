@@ -83,29 +83,6 @@ module "iam_role" {
   ]
 }
 
-# EC2 Instances
-module "ec2_vpc1" {
-  source                 = "./modules/ec2"
-  instance_name          = "${var.project_name}-primary-web"
-  ami_id                 = data.aws_ami.amazon_linux.id
-  instance_type          = var.instance_type
-  subnet_id              = module.subnet_vpc1.public_subnet_ids[0]
-  vpc_security_group_ids = [module.vpc1.web_security_group_id]
-  iam_instance_profile   = module.iam_role.instance_profile_name
-  key_name               = var.key_name
-}
-
-module "ec2_vpc2" {
-  source                 = "./modules/ec2"
-  instance_name          = "${var.project_name}-secondary-web"
-  ami_id                 = data.aws_ami.amazon_linux.id
-  instance_type          = var.instance_type
-  subnet_id              = module.subnet_vpc2.public_subnet_ids[0]
-  vpc_security_group_ids = [module.vpc2.web_security_group_id]
-  iam_instance_profile   = module.iam_role.instance_profile_name
-  key_name               = var.key_name
-}
-
   # VPC Peering (Optional)
   module "vpc_peering" {
     count               = var.enable_vpc_peering ? 1 : 0
@@ -117,3 +94,47 @@ module "ec2_vpc2" {
     vpc1_route_table_id = module.vpc1.public_route_table_id
     vpc2_route_table_id = module.vpc2.public_route_table_id
   }
+
+module "ec2_vpc1" {
+  count = var.enable_ec2 ? 1 : 0
+  source                 = "./modules/ec2"
+  instance_name          = "${var.project_name}-primary-web"
+  ami_id                 = data.aws_ami.amazon_linux.id
+  instance_type          = var.instance_type
+  subnet_id              = module.subnet_vpc1.public_subnet_ids[0]
+  vpc_security_group_ids = [module.vpc1.web_security_group_id]
+  iam_instance_profile   = module.iam_role.instance_profile_name
+  key_name               = var.key_name
+}
+
+module "alb" {
+  source                = "./modules/alb"
+  project_name          = var.project_name
+  vpc_id                = module.vpc1.vpc_id
+  subnets = module.subnet_vpc1.public_subnet_ids
+  container_port = var.container_port
+  health_check_path = var.health_check_path
+}
+
+module "ecr" {
+  source       = "./modules/ecr"
+  project_name = var.project_name
+}
+
+module "ecs" {
+  source     = "./modules/ecs"
+  aws_region = var.aws_region
+  container_port        = var.container_port
+  cpu                   = var.cpu
+  desired_count         = var.desired_count
+  image_uri             = "${module.ecr.repository_url}:${var.image_tag}"
+  log_retention_days    = var.log_retention_days
+  memory                = var.memory
+  project_name          = var.project_name
+  vpc_id                = module.vpc1.vpc_id
+  alb_security_group_id = module.alb.security_group_id
+  subnet_ids = module.subnet_vpc1.public_subnet_ids
+  target_group_arn      = module.alb.target_group_arn
+
+  depends_on = [module.alb]
+}
