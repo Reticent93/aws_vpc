@@ -57,3 +57,7 @@ output "application_config" {
 output "app_url" {
   value = "http://${module.alb.alb_dns_name}"
 }
+
+output "github_actions_role_arn" {
+  value = aws_iam_role.github_actions.arn
+}

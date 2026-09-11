@@ -100,7 +100,6 @@ variable "enable_vpc_peering" {
 
 variable "image_tag" {
     type = string
-    default = "v1"
 }
 
 variable "container_port" {
